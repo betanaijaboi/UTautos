@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "utyumo-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "silhouette-test",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "3050", "C:\\Users\\BAK-AB~1\\AppData\\Local\\Temp\\claude\\C--Users-Bak-Abasi-New-folder--claude-worktrees-hardcore-burnell-cef121\\e718823c-a642-4f6e-adb1-67b47a914bf6\\scratchpad\\silhouette-test"],
+      "port": 3050
+    }
+  ]
+}
