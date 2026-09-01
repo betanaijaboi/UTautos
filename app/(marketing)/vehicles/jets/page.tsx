@@ -1,7 +1,11 @@
 import { getBrands } from "@/lib/actions/catalog";
 import { BrandGrid } from "@/components/vehicle/brand-grid";
 
-export const metadata = { title: "Private Jets — UT Autos" };
+export const metadata = {
+  title: "Private Jets — UT Autos",
+  description: "Browse Gulfstream, Bombardier, Cessna Citation, Embraer, and Dassault Falcon — book mobile detailing for your aircraft.",
+  alternates: { canonical: "/vehicles/jets" },
+};
 
 export default async function JetsPage() {
   const brands = await getBrands("jet");

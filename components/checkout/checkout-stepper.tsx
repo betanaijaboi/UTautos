@@ -244,7 +244,7 @@ export function CheckoutStepper({
                 />
                 <span className="text-sm text-foreground">
                   <EyeOff className="mb-0.5 inline h-3.5 w-3.5 text-gold" /> Blur my
-                  face on this appointment's smart-glasses recording.
+                  face on this appointment&apos;s smart-glasses recording.
                 </span>
               </label>
             </div>

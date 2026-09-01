@@ -2,7 +2,10 @@ import { CalendarClock } from "lucide-react";
 import { getMyAssignedBookings } from "@/lib/actions/detailer";
 import { JobCard } from "@/components/detailer/job-card";
 
-export const metadata = { title: "Detailer Dashboard — UT Autos" };
+export const metadata = {
+  title: "Detailer Dashboard — UT Autos",
+  robots: { index: false, follow: false },
+};
 
 export default async function DetailerDashboardPage() {
   const bookings = await getMyAssignedBookings();

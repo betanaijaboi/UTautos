@@ -1,7 +1,10 @@
 import { getAllBookings } from "@/lib/actions/admin-bookings";
 import { BookingQueue } from "@/components/admin/booking-queue";
 
-export const metadata = { title: "Admin Dashboard — UT Autos" };
+export const metadata = {
+  title: "Admin Dashboard — UT Autos",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminDashboardPage() {
   const bookings = await getAllBookings();

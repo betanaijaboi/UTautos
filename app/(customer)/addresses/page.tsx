@@ -2,7 +2,10 @@ import { getAddresses } from "@/lib/actions/addresses";
 import { AddressList } from "@/components/checkout/address-list";
 import { MapPin } from "lucide-react";
 
-export const metadata = { title: "Addresses — UT Autos" };
+export const metadata = {
+  title: "Addresses — UT Autos",
+  robots: { index: false, follow: false },
+};
 
 export default async function AddressesPage() {
   const addresses = await getAddresses();
@@ -16,7 +19,7 @@ export default async function AddressesPage() {
         Addresses
       </h1>
       <p className="mt-3 text-sm text-muted">
-        Save the addresses where you'd like your detailer to meet you.
+        Save the addresses where you&apos;d like your detailer to meet you.
       </p>
 
       {addresses.length === 0 ? (

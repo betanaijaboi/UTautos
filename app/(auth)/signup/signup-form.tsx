@@ -7,7 +7,8 @@ import { signUp, type SignUpState } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AlertCircle, MailCheck, ShieldCheck } from "lucide-react";
+import { TermsGateModal } from "@/components/legal/terms-gate-modal";
+import { AlertCircle, CheckCircle2, MailCheck, ShieldCheck } from "lucide-react";
 
 const initialState: SignUpState = {};
 
@@ -15,6 +16,19 @@ export function SignUpForm() {
   const router = useRouter();
   const [state, formAction, pending] = useActionState(signUp, initialState);
   const [consented, setConsented] = useState(false);
+
+  // Terms & Privacy gate — every new account must scroll through and accept before submitting
+  const [showTermsModal, setShowTermsModal] = useState(true);
+  const [termsAcceptedAt, setTermsAcceptedAt] = useState<string | null>(null);
+
+  function handleAcceptTerms() {
+    setTermsAcceptedAt(new Date().toISOString());
+    setShowTermsModal(false);
+  }
+
+  function handleDeclineTerms() {
+    setShowTermsModal(false);
+  }
 
   if (state?.needsEmailConfirmation) {
     return (
@@ -34,6 +48,11 @@ export function SignUpForm() {
 
   return (
     <form action={formAction} className="space-y-5">
+      {showTermsModal && (
+        <TermsGateModal onAccept={handleAcceptTerms} onDecline={handleDeclineTerms} />
+      )}
+      <input type="hidden" name="termsAcceptedAt" value={termsAcceptedAt ?? ""} />
+
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1.5 col-span-2">
           <Label htmlFor="fullName">Full name</Label>
@@ -93,6 +112,25 @@ export function SignUpForm() {
         <p className="-mt-3 text-xs text-danger">{state.fieldErrors.consent}</p>
       ) : null}
 
+      <button
+        type="button"
+        onClick={() => setShowTermsModal(true)}
+        className={
+          "flex w-full items-start gap-3 rounded-xl border p-4 text-left text-xs leading-relaxed transition-colors " +
+          (termsAcceptedAt
+            ? "border-success/30 bg-success/10 text-success"
+            : "border-border bg-background-elevated text-muted hover:border-gold/40")
+        }
+      >
+        {termsAcceptedAt ? <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0" /> : null}
+        {termsAcceptedAt
+          ? "You've accepted the Terms of Service and Privacy Policy"
+          : "Review and accept the Terms of Service and Privacy Policy to continue"}
+      </button>
+      {state?.fieldErrors?.termsAcceptedAt ? (
+        <p className="-mt-3 text-xs text-danger">{state.fieldErrors.termsAcceptedAt}</p>
+      ) : null}
+
       {state?.error ? (
         <p className="flex items-center gap-1.5 text-sm text-danger">
           <AlertCircle className="h-4 w-4 shrink-0" />
@@ -100,7 +138,7 @@ export function SignUpForm() {
         </p>
       ) : null}
 
-      <Button type="submit" className="w-full" disabled={pending}>
+      <Button type="submit" className="w-full" disabled={pending || !termsAcceptedAt}>
         {pending ? "Creating account…" : "Create account"}
       </Button>
     </form>

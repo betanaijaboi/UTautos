@@ -77,7 +77,7 @@ export function PaymentStep({
         <>
           <BankTransferInstructions depositCents={depositCents} />
           <Button variant="secondary" onClick={() => router.push(`/bookings/${bookingId}`)}>
-            I've sent the transfer
+            I&apos;ve sent the transfer
           </Button>
         </>
       ) : null}

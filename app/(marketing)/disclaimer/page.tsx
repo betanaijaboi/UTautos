@@ -4,6 +4,8 @@ import { DisclaimerContent } from "@/components/legal/disclaimer-content";
 
 export const metadata = {
   title: "Recording & Privacy Disclaimer — UT Autos",
+  description: "How UT Autos uses smart-glasses documentation during appointments, and how to opt into face blurring.",
+  alternates: { canonical: "/disclaimer" },
 };
 
 export default function DisclaimerPage() {
@@ -24,7 +26,7 @@ export default function DisclaimerPage() {
       </h1>
       <p className="mt-4 text-sm text-muted">
         Every UT Autos appointment involves documentation via smart-glasses camera.
-        Here's exactly what that means for you.
+        Here&apos;s exactly what that means for you.
       </p>
       <div className="mt-12">
         <DisclaimerContent />

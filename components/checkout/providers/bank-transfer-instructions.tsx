@@ -31,7 +31,7 @@ export function BankTransferInstructions({ depositCents }: { depositCents: numbe
       <p className="mt-4 text-xs text-muted">
         Your booking will show as <span className="text-foreground">pending verification</span>{" "}
         until our team confirms your transfer — this is usually within a few
-        hours. Your detailer isn't mobilized until then.
+        hours. Your detailer isn&apos;t mobilized until then.
       </p>
     </div>
   );

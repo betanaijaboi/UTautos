@@ -1,7 +1,11 @@
 import { getBrands } from "@/lib/actions/catalog";
 import { BrandGrid } from "@/components/vehicle/brand-grid";
 
-export const metadata = { title: "Luxury Cars — UT Autos" };
+export const metadata = {
+  title: "Luxury Cars — UT Autos",
+  description: "Browse Ferrari, Lamborghini, Rolls-Royce, Bentley, Porsche, McLaren, and more — book mobile detailing for your marque.",
+  alternates: { canonical: "/vehicles/cars" },
+};
 
 export default async function CarsPage() {
   const brands = await getBrands("car");

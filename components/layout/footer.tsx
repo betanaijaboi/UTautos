@@ -18,6 +18,12 @@ export function Footer() {
           <Link href="/disclaimer" className="hover:text-foreground">
             Recording &amp; Privacy Disclaimer
           </Link>
+          <Link href="/terms" className="hover:text-foreground">
+            Terms
+          </Link>
+          <Link href="/privacy" className="hover:text-foreground">
+            Privacy
+          </Link>
         </div>
       </div>
     </footer>

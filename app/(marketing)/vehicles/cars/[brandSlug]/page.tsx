@@ -12,7 +12,13 @@ export async function generateMetadata({
 }) {
   const { brandSlug } = await params;
   const { brand } = await getModelsByBrandSlug(brandSlug);
-  return { title: brand ? `${brand.name} — UT Autos` : "UT Autos" };
+  if (!brand) return { title: "UT Autos" };
+
+  return {
+    title: `${brand.name} — UT Autos`,
+    description: `Book mobile detailing for your ${brand.name} — a detailer comes to you.`,
+    alternates: { canonical: `/vehicles/cars/${brandSlug}` },
+  };
 }
 
 export default async function CarBrandPage({
@@ -30,13 +36,14 @@ export default async function CarBrandPage({
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
-      <Link
-        href="/vehicles/cars"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-gold-bright"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        All brands
-      </Link>
+      <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-1.5 text-sm text-muted">
+        <Link href="/vehicles/cars" className="flex items-center gap-1.5 transition-colors hover:text-gold-bright">
+          <ArrowLeft className="h-4 w-4" />
+          Cars
+        </Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page" className="font-medium text-foreground">{brand.name}</span>
+      </nav>
       <p className="mb-2 text-xs font-medium uppercase tracking-widest text-gold">
         Luxury Automaker
       </p>

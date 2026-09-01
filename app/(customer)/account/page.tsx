@@ -4,7 +4,10 @@ import { getCurrentProfile } from "@/lib/actions/auth";
 import { Card, CardContent } from "@/components/ui/card";
 import { FaceBlurToggle } from "./face-blur-toggle";
 
-export const metadata = { title: "Account — UT Autos" };
+export const metadata = {
+  title: "Account — UT Autos",
+  robots: { index: false, follow: false },
+};
 
 export default async function AccountPage() {
   const profile = await getCurrentProfile();
@@ -40,7 +43,7 @@ export default async function AccountPage() {
                   Blur my face by default
                 </p>
                 <p className="mt-1 text-sm text-muted">
-                  When enabled, your detailer's smart-glasses recordings
+                  When enabled, your detailer&apos;s smart-glasses recordings
                   automatically blur your face. You can override this per
                   booking at checkout.
                 </p>

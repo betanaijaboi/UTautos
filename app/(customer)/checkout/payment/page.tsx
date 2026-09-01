@@ -4,7 +4,10 @@ import { getPaymentProviders } from "@/lib/actions/payments";
 import { PaymentStep } from "@/components/checkout/payment-step";
 import { CartSummary } from "@/components/checkout/cart-summary";
 
-export const metadata = { title: "Payment — UT Autos" };
+export const metadata = {
+  title: "Payment — UT Autos",
+  robots: { index: false, follow: false },
+};
 
 export default async function CheckoutPaymentPage({
   searchParams,

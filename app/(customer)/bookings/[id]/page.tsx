@@ -5,6 +5,11 @@ import { BookingStatusBadge } from "@/components/admin/booking-status-badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCents } from "@/lib/utils";
 
+export const metadata = {
+  title: "Booking Details — UT Autos",
+  robots: { index: false, follow: false },
+};
+
 const STATUS_STEPS = [
   "pending_payment",
   "confirmed",

@@ -7,6 +7,11 @@ import { DetailerTrailMap } from "@/components/admin/detailer-trail-map";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCents } from "@/lib/utils";
 
+export const metadata = {
+  title: "Booking Detail — Admin — UT Autos",
+  robots: { index: false, follow: false },
+};
+
 export default async function AdminBookingDetailPage({
   params,
 }: {

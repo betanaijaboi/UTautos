@@ -4,7 +4,10 @@ import { getMyBookings } from "@/lib/actions/checkout";
 import { BookingStatusBadge } from "@/components/admin/booking-status-badge";
 import { formatCents } from "@/lib/utils";
 
-export const metadata = { title: "Bookings — UT Autos" };
+export const metadata = {
+  title: "Bookings — UT Autos",
+  robots: { index: false, follow: false },
+};
 
 export default async function BookingsPage() {
   const bookings = await getMyBookings();

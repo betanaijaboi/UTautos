@@ -4,7 +4,10 @@ import { getAddresses } from "@/lib/actions/addresses";
 import { getCurrentProfile } from "@/lib/actions/auth";
 import { CheckoutStepper } from "@/components/checkout/checkout-stepper";
 
-export const metadata = { title: "Checkout — UT Autos" };
+export const metadata = {
+  title: "Checkout — UT Autos",
+  robots: { index: false, follow: false },
+};
 
 export default async function CheckoutPage({
   searchParams,

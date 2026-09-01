@@ -3,7 +3,10 @@ import { ManualPaymentConfirmButton } from "@/components/admin/manual-payment-co
 import { formatCents } from "@/lib/utils";
 import { Landmark } from "lucide-react";
 
-export const metadata = { title: "Payments — Admin — UT Autos" };
+export const metadata = {
+  title: "Payments — Admin — UT Autos",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminPaymentsPage() {
   const payments = await getPendingManualPayments();

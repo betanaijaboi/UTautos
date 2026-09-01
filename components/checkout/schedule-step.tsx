@@ -40,7 +40,7 @@ export function ScheduleStep({
         />
       </div>
       <p className="col-span-2 text-xs text-muted">
-        Detailing appointments run 8:00 AM – 7:00 PM. We'll confirm the exact
+        Detailing appointments run 8:00 AM – 7:00 PM. We&apos;ll confirm the exact
         arrival window once your deposit clears.
       </p>
     </div>

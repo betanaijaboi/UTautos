@@ -1,0 +1,18 @@
+# UT Autos
+
+> Concierge mobile detailing for ultra-luxury cars and private jets — a detailer comes to you.
+
+UT Autos is a booking platform connecting owners of high-end cars (Ferrari, Lamborghini, Rolls-Royce, Bentley, Porsche, McLaren, Aston Martin, Mercedes-Maybach) and private jets (Gulfstream, Bombardier, Cessna Citation, Embraer, Dassault Falcon) with independent mobile detailers. Customers build a personal garage of their vehicles/aircraft and book detailing services on demand.
+
+## Key pages
+- `/vehicles/cars` — browse luxury car brands
+- `/vehicles/jets` — browse private jet manufacturers
+- `/vehicles/cars/{brand}` / `/vehicles/jets/{brand}` — models available for a specific brand
+
+## Legal
+- Terms of Service: /terms
+- Privacy Policy: /privacy
+- Recording & Privacy Disclaimer: /disclaimer
+
+## Stack
+Next.js (App Router), Supabase (auth, database), Stripe/Paystack/PayPal for payments.

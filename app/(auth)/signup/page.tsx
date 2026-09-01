@@ -2,7 +2,11 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { SignUpForm } from "./signup-form";
 
-export const metadata = { title: "Create Account — UT Autos" };
+export const metadata = {
+  title: "Create Account — UT Autos",
+  description: "Create a UT Autos account to build your garage and book mobile detailing for your cars and private jets.",
+  alternates: { canonical: "/signup" },
+};
 
 export default function SignUpPage() {
   return (

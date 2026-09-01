@@ -12,6 +12,9 @@ const signUpSchema = z.object({
   consent: z.literal(true, {
     error: "You must accept the recording & privacy disclaimer to continue",
   }),
+  termsAcceptedAt: z.string().min(1, {
+    error: "You must accept the Terms of Service and Privacy Policy to continue",
+  }),
 });
 
 export type SignUpState = {
@@ -30,6 +33,7 @@ export async function signUp(
     email: formData.get("email"),
     password: formData.get("password"),
     consent: formData.get("consent") === "on",
+    termsAcceptedAt: formData.get("termsAcceptedAt"),
   });
 
   if (!parsed.success) {
@@ -40,7 +44,7 @@ export async function signUp(
     return { fieldErrors };
   }
 
-  const { fullName, phone, email, password } = parsed.data;
+  const { fullName, phone, email, password, termsAcceptedAt } = parsed.data;
   const supabase = await createClient();
 
   // Phone + consent are written by the handle_new_user DB trigger (security
@@ -55,6 +59,7 @@ export async function signUp(
         phone,
         consent: true,
         disclaimer_version: DISCLAIMER_VERSION,
+        terms_accepted_at: termsAcceptedAt,
       },
     },
   });

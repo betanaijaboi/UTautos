@@ -17,7 +17,7 @@ export function ExpressCta({ price }: { price: string }) {
         Express ({price}) is our fastest tier — a detailer mobilizes within{" "}
         <span className="text-foreground">5 hours</span> of your call, no
         appointment needed. Because timing is everything, Express can only be
-        booked by calling {businessName} directly — it can't be completed
+        booked by calling {businessName} directly — it can&apos;t be completed
         through online checkout.
       </p>
       <Button asChild className="mt-5 w-fit">

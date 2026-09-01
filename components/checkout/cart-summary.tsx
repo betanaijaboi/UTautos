@@ -45,7 +45,7 @@ export function CartSummary({
           <p className="text-xs text-muted">
             Remainder ({formatCents(subtotalCents - depositCents)}) is due on
             completion. Deposits are non-refundable — they hold your
-            detailer's time.
+            detailer&apos;s time.
           </p>
         </div>
       </CardContent>
