@@ -2,8 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-
-const DEPOSIT_PERCENT = 10;
+import { calculateBookingTotals } from "@/lib/pricing";
 
 export async function getGarageItemForCheckout(garageItemId: string) {
   const supabase = await createClient();
@@ -126,12 +125,15 @@ export async function setBookingServices(
     if (insertError) return { ok: false, error: insertError.message };
   }
 
-  const subtotal = services.reduce((sum, s) => sum + s.price_cents, 0);
-  const deposit = Math.round((subtotal * DEPOSIT_PERCENT) / 100);
+  const totals = calculateBookingTotals(services.map((s) => s.price_cents));
 
   const { error: updateError } = await supabase
     .from("bookings")
-    .update({ subtotal_cents: subtotal, deposit_cents: deposit, total_cents: subtotal })
+    .update({
+      subtotal_cents: totals.subtotalCents,
+      deposit_cents: totals.depositCents,
+      total_cents: totals.totalCents,
+    })
     .eq("id", bookingId);
 
   if (updateError) return { ok: false, error: updateError.message };

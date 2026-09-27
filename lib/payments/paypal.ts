@@ -59,3 +59,44 @@ export async function capturePaypalOrder(orderId: string) {
   if (!res.ok) throw new Error(data.message || "PayPal capture failed");
   return data;
 }
+
+/**
+ * Asks PayPal whether a webhook delivery is genuine, using the transmission
+ * headers PayPal sends plus the webhook ID from the PayPal dashboard.
+ * Returns false (rather than throwing) for anything that isn't verified.
+ */
+export async function verifyPaypalWebhookSignature(
+  headers: Headers,
+  event: unknown,
+): Promise<boolean> {
+  const webhookId = process.env.PAYPAL_WEBHOOK_ID;
+  if (!isPaypalConfigured() || !webhookId) return false;
+
+  const header = (name: string) => headers.get(name);
+  const required = [
+    "paypal-auth-algo",
+    "paypal-cert-url",
+    "paypal-transmission-id",
+    "paypal-transmission-sig",
+    "paypal-transmission-time",
+  ];
+  if (required.some((name) => !header(name))) return false;
+
+  const token = await getAccessToken();
+  const res = await fetch(`${PAYPAL_BASE}/v1/notifications/verify-webhook-signature`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      auth_algo: header("paypal-auth-algo"),
+      cert_url: header("paypal-cert-url"),
+      transmission_id: header("paypal-transmission-id"),
+      transmission_sig: header("paypal-transmission-sig"),
+      transmission_time: header("paypal-transmission-time"),
+      webhook_id: webhookId,
+      webhook_event: event,
+    }),
+  });
+  if (!res.ok) return false;
+  const data = await res.json();
+  return data.verification_status === "SUCCESS";
+}

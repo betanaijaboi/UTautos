@@ -26,6 +26,26 @@ See `.env.example` for the full list. At minimum you need:
 
 Everything else (Stripe, Paystack, PayPal, Google Maps) is optional in development — leaving them as the `REPLACE_ME` placeholders keeps the app fully functional via dev-mode payment simulation and a manual-entry address form. Drop in real keys later and those flows switch to live automatically, no code changes required.
 
+## Tests
+
+```bash
+npm test          # Vitest, runs in Node; no Supabase or payment keys needed
+```
+
+| Suite | Covers |
+|---|---|
+| `__tests__/api/paystack-webhook.test.ts` | HMAC-SHA512 signature check: valid, missing, wrong key, tampered body; ignored event types; 503 when unconfigured |
+| `__tests__/api/stripe-webhook.test.ts` | Stripe signature verification path and `payment_intent.succeeded` handling |
+| `__tests__/api/paypal-webhook.test.ts` | Every delivery verified with PayPal's `verify-webhook-signature` API; forged events rejected; only `PAYMENT.CAPTURE.COMPLETED` confirms a booking |
+| `__tests__/webhook-helpers.test.ts` | Marking a deposit paid is idempotent under webhook retries and only confirms bookings still in `pending_payment` |
+| `__tests__/pricing.test.ts` | Subtotal and 10% deposit calculation, including rounding |
+| `__tests__/feature-flags.test.ts` | Placeholder keys keep each payment provider in dev mode |
+| `__tests__/utils.test.ts` | Currency formatting, Tailwind class merging, body-style detection for vehicle silhouettes |
+
+CI runs the tests, lint and a type-check on every push and pull request (`.github/workflows/ci.yml`).
+
+The PayPal webhook needs `PAYPAL_WEBHOOK_ID` from the PayPal dashboard (see `.env.example`). Without it the route returns 503 instead of trusting unverified events.
+
 ## Database
 
 All schema lives in `supabase/migrations/`, applied in order. Key design points:

@@ -3,19 +3,31 @@ import { isPaypalConfigured } from "@/lib/config/feature-flags";
 import { markDepositPaidByReference } from "@/lib/payments/webhook-helpers";
 
 export async function POST(request: Request) {
-  if (!isPaypalConfigured()) {
-    return NextResponse.json({ error: "PayPal not configured" }, { status: 503 });
+  if (!isPaypalConfigured() || !process.env.PAYPAL_WEBHOOK_ID) {
+    return NextResponse.json({ error: "PayPal webhooks not configured" }, { status: 503 });
   }
 
-  // PayPal webhook signature verification requires calling PayPal's
-  // v1/notifications/verify-webhook-signature endpoint with the transmission
-  // headers below plus PAYPAL_WEBHOOK_ID (set this once a webhook is
-  // registered in the PayPal dashboard). Left as a clear extension point
-  // since there's no live webhook to register without real credentials.
-  const event = await request.json();
+  let event;
+  try {
+    event = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+  }
 
-  if (event.event_type === "CHECKOUT.ORDER.APPROVED" || event.event_type === "PAYMENT.CAPTURE.COMPLETED") {
-    const orderId = event.resource?.supplementary_data?.related_ids?.order_id ?? event.resource?.id;
+  // Every delivery is checked with PayPal before we trust it. Without this,
+  // anyone could POST a fake "capture completed" event and confirm a booking
+  // without paying.
+  const { verifyPaypalWebhookSignature } = await import("@/lib/payments/paypal");
+  if (!(await verifyPaypalWebhookSignature(request.headers, event))) {
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+  }
+
+  // Only a completed capture means money moved. ORDER.APPROVED fires before
+  // capture, so it must not confirm the booking.
+  if (event.event_type === "PAYMENT.CAPTURE.COMPLETED") {
+    // payments.provider_reference holds the PayPal order ID (see
+    // createPaypalOrder), which a capture event carries in related_ids.
+    const orderId = event.resource?.supplementary_data?.related_ids?.order_id;
     if (orderId) {
       await markDepositPaidByReference(orderId);
     }
